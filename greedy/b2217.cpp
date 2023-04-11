@@ -23,7 +23,7 @@ int main(void)
 		cin >> b[i];
 	}
 
-	sort(a, a + n, greater<int>());
+	sort(a, a + n, greater<int>()); // sort descending
 	sort(b, b + n);
 
 	for (int i = 0; i < n; ++i) {
