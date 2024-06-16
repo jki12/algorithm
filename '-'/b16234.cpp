@@ -1,0 +1,92 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+#define x first
+#define y second
+
+const int MAX = 50;
+
+int n, l, r, ans;
+int board[MAX][MAX];
+bool vis[MAX][MAX];
+bool has_move;
+
+int dx[] = { 0, 0, 1, -1 };
+int dy[] = { 1, -1, 0, 0 };
+
+bool boundary(int x, int y) {
+    return (0 <= x && x < n) && (0 <= y && y < n);
+}
+
+void bfs(pair<int, int> p) {
+    queue<pair<int, int> > q;
+    queue<pair<int, int> > temp;
+
+    if (!vis[p.x][p.y]) {
+        q.push(p);
+
+        vis[p.x][p.y] = true;
+        temp.push(make_pair(p.x, p.y));
+    }
+
+    int count = 1; // 열린 국경 수
+    int popu = board[p.x][p.y];
+
+    while (!q.empty()) {
+        p = q.front(); q.pop();
+
+        for (int i = 0; i < 4; ++i) {
+            int nx = p.x + dx[i];
+            int ny = p.y + dy[i];
+
+            if (!boundary(nx, ny) || vis[nx][ny] || l > abs(board[p.x][p.y] - board[nx][ny]) || r < abs(board[p.x][p.y] - board[nx][ny])) continue;
+
+            vis[nx][ny] = true;
+            temp.push(make_pair(nx, ny));
+
+            popu += board[nx][ny];
+            count++;
+
+            q.push(make_pair(nx, ny));
+        }
+    }
+
+    has_move = has_move || (temp.size() > 1);
+
+    int avg = popu / count;
+    while (!temp.empty()) {
+        p = temp.front(); temp.pop();
+
+        board[p.x][p.y] = avg;
+    }
+}
+
+int main(void) {
+    cin >> n >> l >> r;
+
+    for (int i = 0; i < n * n; ++i) {
+        cin >> board[i / n][i % n];
+    }
+
+    for (int i = 0; i < n * n; ++i) {
+        for (int j = 0; j < n * n; ++j) {
+            bfs(make_pair(j / n, j % n));
+        }
+
+        if (has_move) {
+            ans++;
+
+            has_move = false;
+        }
+
+        for (int j = 0; j < n * n; ++j) { // init.
+            vis[j / n][j % n] = 0;
+        }
+    }
+
+    cout << ans << '\n';
+}
