@@ -55,6 +55,7 @@ void bfs(pair<int, int> p) {
         }
     }
 
+    // 다른 지역에서 이동이 있었던 경우가 있을 수 있기 때문에 or로 판단
     has_move = has_move || (temp.size() > 1);
 
     int avg = popu / count;
@@ -78,9 +79,8 @@ int main(void) {
         }
 
         if (has_move) {
-            ans++;
-
             has_move = false;
+            ans++;
         }
 
         for (int j = 0; j < n * n; ++j) { // init.
