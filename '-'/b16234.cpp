@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#include <algorithm>
 
 using namespace std;
 
@@ -67,26 +66,7 @@ void bfs(pair<int, int> p) {
 }
 
 int main(void) {
-    cin >> n >> l >> r;
+    vector<int> v{1, 2, 3};
 
-    for (int i = 0; i < n * n; ++i) {
-        cin >> board[i / n][i % n];
-    }
-
-    for (int i = 0; i < n * n; ++i) {
-        for (int j = 0; j < n * n; ++j) {
-            bfs(make_pair(j / n, j % n));
-        }
-
-        if (has_move) {
-            has_move = false;
-            ans++;
-        }
-
-        for (int j = 0; j < n * n; ++j) { // init.
-            vis[j / n][j % n] = 0;
-        }
-    }
-
-    cout << ans << '\n';
+    // cout << "ho" << '\n';
 }
