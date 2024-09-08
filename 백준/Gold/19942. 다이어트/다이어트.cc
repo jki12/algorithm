@@ -10,41 +10,27 @@ struct nutrition {
 };
 
 int min_cost = INT32_MAX;
-int n, mp, mf, mv, ms, p, f, v, s, cost;
+int n, mp, mf, mv, ms, cost;
 
 bool vis[SIZE];
 bool ans[SIZE];
 nutrition foods[SIZE];
 
-void recur(int cur) {
-    if (mp <= p && mf <= f && mv <= v && ms <= s) {
-
-        if (min_cost > cost) {
-            min_cost = cost;
-            copy(vis, vis + n, ans);
-        }
+void recur(int cur, int p, int f, int v, int s, int c) {
+    if (mp <= p && mf <= f && mv <= v && ms <= s && min_cost > c) { // 조건문 하나로 수정.
+        min_cost = c;
+        copy(vis, vis + n, ans);
 
         return;
     }
 
-    for (int i = cur; i < n; ++i) {
-        if (vis[i]) continue;
+    // for문 제거.
+    if (cur < n) {
+        vis[cur] = true;
+        recur(cur + 1, foods[cur].p + p, foods[cur].f + f, foods[cur].v + v, foods[cur].s + s, foods[cur].c + c);
+        vis[cur] = false;
 
-        vis[i] = true;
-        p += foods[i].p;
-        f += foods[i].f;
-        v += foods[i].v;
-        s += foods[i].s;
-        cost += foods[i].c;
-        
-        recur(i + 1);
-
-        vis[i] = false;
-        p -= foods[i].p;
-        f -= foods[i].f;
-        v -= foods[i].v;
-        s -= foods[i].s;
-        cost -= foods[i].c;
+        recur(cur + 1, p, f, v, s, c);
     }
 }
 
@@ -52,26 +38,18 @@ int main(void) {
     cin >> n >> mp >> mf >> ms >> mv;
 
     for (int i = 0; i < n; ++i) {
-        nutrition temp;
-
-        cin >> temp.p;
-        cin >> temp.f;
-        cin >> temp.s;
-        cin >> temp.v;
-        cin >> temp.c;
-
-        foods[i] = temp;
+        cin >> foods[i].p >> foods[i].f >> foods[i].s >> foods[i].v >> foods[i].c;
     }
 
-    recur(0);
+    recur(0, 0, 0, 0, 0, 0);
 
     if (min_cost == INT32_MAX) {
         cout << -1;
-        return 0;
     }
-
-    cout << min_cost << ' ';
-    for (int i = 0; i < n; ++i) {
-        if (ans[i]) cout << i + 1 << ' ';
+    else {
+        cout << min_cost << ' ';
+        for (int i = 0; i < n; ++i) {
+            if (ans[i]) cout << i + 1 << ' ';
+        }
     }
 }
