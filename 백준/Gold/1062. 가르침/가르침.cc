@@ -2,32 +2,37 @@
 
 using namespace std;
 
-#define SIZE 256
+#define SIZE 64
 
 int n, k, ans;
-string s;
-int word_flags[SIZE];
+int flags[SIZE];
 
 void recur(int flag, int idx, int c) { // 26Ck
     if (c == k) {
-        int temp = 0;
+        int cnt = 0;
         for (int i = 0; i < n; ++i) {
-            if (word_flags[i] == (word_flags[i] & flag)) temp++;
+            if (flags[i] == (flags[i] & flag)) cnt++;
         }
 
-        ans = max(ans, temp);
+        ans = max(ans, cnt);
 
         return;
     }
 
-    for (int i = idx; i < 26; ++i) {
-        recur(flag | (1 << i), i + 1, c + 1);
+    if (idx >= 26) {
+        return;
     }
+
+    recur(flag | (1 << idx), idx + 1, c + 1);
+    recur(flag, idx + 1, c);
 }
 
 int main(void) {
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+    
     cin >> n >> k;
 
+    string s;
     for (int i = 0; i < n; ++i) {
         cin >> s;
 
@@ -36,9 +41,8 @@ int main(void) {
             flag |= (1 << (s[i] - 'a'));
         }
 
-        word_flags[i] = flag;
+        flags[i] = flag;
     }
-
     
     recur(0, 0, 0);
 
