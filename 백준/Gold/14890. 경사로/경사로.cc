@@ -14,7 +14,7 @@ int main(void) {
         cin >> board[i / n][i % n];
     }
 
-    for (int i = 0; i < n * n; ++i) {
+    for (int i = 0; i < n * n; ++i) { row를 col으로 추가.
         board[n + i / n][i % n] = board[i % n][i / n];
     }
 
