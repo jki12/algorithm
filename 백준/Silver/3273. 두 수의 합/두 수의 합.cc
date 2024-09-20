@@ -1,41 +1,37 @@
-#define _CRT_SECURE_NO_WARNINGS
+#include <bits/stdc++.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
+#define SIZE (100001)
 
 using namespace std;
-typedef unsigned int uint;
 
-int main(void)
-{
-    uint n, x;
-    uint arr[1000000] = { 0, };
-    uint ans = 0;
+int n, m, ans;
+int arr[SIZE];
 
-    scanf("%d", &n);
-    
-    uint* nums = (uint*)malloc(n * sizeof(uint));
+int main(void) {
+    ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+    cin >> n;
+
     for (int i = 0; i < n; ++i) {
-        int temp;
-        scanf("%d", &temp);
-
-        nums[i] = temp;
-        arr[temp - 1]++;
+        cin >> arr[i];
     }
 
-    scanf("%d", &x);
-    
-    for (int i = 0; i < n; ++i) {
-        // assert(0 <= x - nums[i] - 1 && x - nums[i] - 1 < 1000000);
-        if (0 < x - nums[i] && x - nums[i] <= 1000000 && arr[x - nums[i] - 1] == 1) {
-            ans++;
+    cin >> m;
+
+    sort(arr, arr + n);
+
+    int l = 0;
+    int r = n - 1;
+    while (l < r) {
+        int temp = arr[l] + arr[r];
+
+        if (temp == m) ans++;
+
+        if (temp < m) {
+            l++;
+        } else {
+            r--;
         }
     }
 
-    printf("%d", ans / 2);
-
-    free(nums);
-    return 0;
+    cout << ans << '\n';
 }
