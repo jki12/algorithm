@@ -14,12 +14,10 @@ int m = 2;
 pair<int, int> pos;
 vector<pair<int, int>> v;
 
-int arr[21][21];
-int vis[21][21];
+int arr[SIZE][SIZE];
 
 int bfs(pair<int, int> s, pair<int, int> d) {
-    // memset(vis, 0, 21 * 21);
-    int vis[21][21] = { 0, };
+    int vis[SIZE][SIZE] = { 0, };
 
     queue<pair<int, int>> q;
     q.push(s);
@@ -80,14 +78,11 @@ int main(void) {
     }
 
     int eat_cnt = 0;
-    int i = find_target();
-    while (i != -1) {
-        arr[pos.x][pos.y] = 0;
+    int i;
+    while ((i = find_target()) != -1) {
         pos = v[i];
-        arr[pos.x][pos.y] = 9;
 
         eat_cnt++;
-
         if (m == eat_cnt) {
             eat_cnt = 0;
             m++;
@@ -95,10 +90,7 @@ int main(void) {
 
         arr[v[i].x][v[i].y] = 0;
         v.erase(v.begin() + i);
-
-        i = find_target();
     }
-
 
     cout << ans << '\n';
 }
