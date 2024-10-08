@@ -11,6 +11,8 @@ bool compare(string a, string b) {
 }
 
 int main(void) {
+    ios::sync_with_stdio(0); cin.tie(0);
+
     cin >> n;
     vector<string> v(n);
     vector<string> unique;
